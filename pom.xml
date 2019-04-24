@@ -8,5 +8,8 @@
   	<module>zookeepers-socket-server-8080</module>
   	<module>zookeepers-socket-server-8081</module>
   	<module>zookeepers-socket-client-7070</module>
+  	<module>zookeepers-socket-demo</module>
+  	<module>zookeepers-socket-demo-server</module>
+  	<module>zookeepers-socket-demo-client</module>
   </modules>
 </project>
