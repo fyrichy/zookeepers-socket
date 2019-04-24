@@ -8,21 +8,28 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZkServerClient {
+/**
+ * @Desc: 使用socket创建客户端
+ * @author Richy
+ */
+public class ZkClient {
 	public static List<String> listServer = new ArrayList<String>();
 
 	public static void main(String[] args) {
 		initServer();
-		ZkServerClient 	client= new ZkServerClient();
+		ZkClient client= new ZkClient();
+		//把控制台信息放入到bufferdReader中
 		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			String name;
 			try {
+				//读取控制台信息
 				name = console.readLine();
 				if ("exit".equals(name)) {
 					System.exit(0);
 				}
-				client.send(name);
+				//客户端发送请求
+				client.request(name);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -30,6 +37,11 @@ public class ZkServerClient {
 	}
 
 	// 注册所有server
+	/**
+	 * @Desc：注册所有server
+	 * @Author：richy
+	 * @Year：2019
+	 */
 	public static void initServer() {
 		listServer.clear();
 		listServer.add("127.0.0.1:8080");
@@ -40,26 +52,30 @@ public class ZkServerClient {
 		return listServer.get(0);
 	}
 	
-	public void send(String name) {
-
-		String server = ZkServerClient.getServer();
+	/**
+	 * @Desc：客户端发送请求
+	 * @Author：richy
+	 * @Year：2019
+	 */
+	public void request(String name) {
+		//把服务的地址和端口号放入到一个集合中
+		String server = ZkClient.getServer();
 		String[] cfg = server.split(":");
-
 		Socket socket = null;
 		BufferedReader in = null;
 		PrintWriter out = null;
 		try {
+			//创建一个socket连接到服务端
 			socket = new Socket(cfg[0], Integer.parseInt(cfg[1]));
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
-
 			out.println(name);
 			while (true) {
-				String resp = in.readLine();
-				if (resp == null)
+				String response = in.readLine();
+				if (response == null) {
 					break;
-				else if (resp.length() > 0) {
-					System.out.println("Receive : " + resp);
+				}else if (response.length() > 0) {
+					System.out.println("客户端打印 : " + response);
 					break;
 				}
 			}

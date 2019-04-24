@@ -6,38 +6,44 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerHandler implements Runnable {
+public class ZkServerHandler implements Runnable {
 	private Socket socket;
 
-	public ServerHandler(Socket socket) {
+	public ZkServerHandler(Socket socket) {
 		this.socket = socket;
 	}
 
+	/**
+	 * @Desc：用于接收客户端的请求数据
+	 * @Author：richy
+	 * @Year：2019
+	 */
 	public void run() {
-		BufferedReader in = null;
-		PrintWriter out = null;
+		BufferedReader bf = null;
+		PrintWriter pw = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			out = new PrintWriter(this.socket.getOutputStream(), true);
+			bf = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+			pw = new PrintWriter(this.socket.getOutputStream(), true);
 			String body = null;
 			while (true) {
-				body = in.readLine();
-				if (body == null)
+				body = bf.readLine();
+				if (body == null) {
 					break;
-				System.out.println("Receive : " + body);
-				out.println("Hello, " + body);
+				}
+				System.out.println("服务端接收到 : " + body);
+				pw.println("Hello, " + body);
 			}
 
 		} catch (Exception e) {
-			if (in != null) {
+			if (bf != null) {
 				try {
-					in.close();
+					bf.close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
-			if (out != null) {
-				out.close();
+			if (pw != null) {
+				pw.close();
 			}
 			if (this.socket != null) {
 				try {

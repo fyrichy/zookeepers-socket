@@ -4,30 +4,39 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ZkServerScoekt implements Runnable {
+/**
+ * @Desc：创建端口号为8080的服务端
+ * @author：Richy
+ */
+public class ZkServer8080 implements Runnable {
 	
 	private int port = 8080;
 
 	public static void main(String[] args) throws IOException {
 		int port = 8080;	
-		ZkServerScoekt server = new ZkServerScoekt(port);
+		ZkServer8080 server = new ZkServer8080(port);
 		Thread thread = new Thread(server);
 		thread.start();
 	}
 
-	public ZkServerScoekt(int port) {
+	public ZkServer8080(int port) {
 		this.port = port;
 	}
 
+	/**
+	 * @Desc：服务端进行处理
+	 * @Author：richy
+	 * @Year：2019
+	 */
 	public void run() {
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);
-			System.out.println("Server start port:" + port);
+			System.out.println("服务开始，端口号为：" + port);
 			Socket socket = null;
 			while (true) {
 				socket = serverSocket.accept();
-				new Thread(new ServerHandler(socket)).start();
+				new Thread(new ZkServerHandler(socket)).start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
