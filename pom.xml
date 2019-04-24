@@ -11,5 +11,6 @@
   	<module>zookeepers-socket-demo</module>
   	<module>zookeepers-socket-demo-server</module>
   	<module>zookeepers-socket-demo-client</module>
+  	<module>zookeepers-demo</module>
   </modules>
 </project>
