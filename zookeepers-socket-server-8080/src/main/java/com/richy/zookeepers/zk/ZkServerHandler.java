@@ -1,4 +1,4 @@
-package com.richy.zookeepers.server;
+package com.richy.zookeepers.zk;
 
 import java.io.BufferedReader;
 import java.io.IOException;
